@@ -19,7 +19,9 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 app.use(cors());
-app.use('/crops', express.static(path.join(__dirname, 'public/crops')));
+
+const publicCropsPath = path.join(__dirname, '..', 'public', 'crops');
+app.use('/crops', express.static(publicCropsPath));
 
 const upload = multer({ dest: "uploads/" });
 
@@ -112,10 +114,13 @@ Analyze the image and provide at least four specific feedback points.`;
 
     const geminiResponse = JSON.parse(result.response.candidates[0].content.parts[0].text);
 
+    const cropsDir = path.join(__dirname, '..', 'public', 'crops');
+    fs.mkdirSync(cropsDir, { recursive: true });
+
     for (const feedback of geminiResponse.specificFeedback) {
       const { x, y, width, height } = feedback.cropCoordinates;
       const cropFileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}.png`;
-      const cropPath = path.join(__dirname, "public", "crops", cropFileName);
+      const cropPath = path.join(cropsDir, cropFileName);
 
       await sharp(imagePath)
         .extract({ left: x, top: y, width, height })
