@@ -88,24 +88,31 @@ app.post("/api/analyze", upload.single("image"), async (req, res) => {
 
     const imagePart = fileToGenerativePart(imagePath, imageMimeType);
 
-    const textPrompt = `You are a world-class UI/UX design expert. Analyze the attached UI screenshot. Your response MUST be in a valid JSON format.
-
-The JSON object must have two keys: 'overallFeedback' and 'specificFeedback'.
-
-1.  For 'overallFeedback', provide a comprehensive review of the design.
-2.  For 'specificFeedback', provide an array of objects. Each object must contain three keys: 'critique', 'cropCoordinates', and 'inspirationKeywords'.
-
-**Crucially, for 'cropCoordinates'**:
-- The coordinate system's origin (0,0) is the top-left corner of the image.
-- The values for 'x', 'y', 'width', and 'height' must be integers representing pixels.
-- The bounding box you define MUST accurately surround the specific UI element you are critiquing. For example, if you critique a button, the box should tightly enclose only that button. Be precise.
-
-For 'inspirationKeywords', provide 2-3 keywords for finding inspirational images on Unsplash.
-
-Analyze the image and provide at least four specific feedback points.`;
+    const prompt = `
+    You are an expert UI/UX designer. Analyze the provided user interface screenshot.
+    Based on your analysis, provide feedback in a strict JSON format. Do not include any text or formatting outside of the JSON object.
+    The JSON object must have two root keys: "overallFeedback" and "specificFeedback".
+    1. "overallFeedback": A string containing a high-level summary of your feedback, highlighting the main strengths and weaknesses of the design.
+    2. "specificFeedback": An array of objects, where each object represents a specific point of feedback on a particular UI element. Each object in this array MUST contain the following four keys:
+        - "critique": A string with your detailed critique or suggestion for that specific UI element.
+        - "cropCoordinates": An object with the keys "x", "y", "width", and "height". These values should define a bounding box around the UI element you are critiquing, with coordinates relative to the image's dimensions. For now, you can return placeholder values.
+        - "dribbbleKeywords": A string containing 2-3 relevant keywords based on your critique that can be used to search for design inspiration on Dribbble.
+        - "uxHeuristic": The name of the closest-matching Don Norman UX heuristic from this list:
+          1. Visibility of system status
+          2. Match between system and the real world
+          3. User control and freedom
+          4. Consistency and standards
+          5. Error prevention
+          6. Recognition rather than recall
+          7. Flexibility and efficiency of use
+          8. Aesthetic and minimalist design
+          9. Help users recognize, diagnose, and recover from errors
+          10. Help and documentation
+    Provide at least 3-5 specific feedback points.
+    `;
 
     const result = await model.generateContent({
-      contents: [{ role: "user", parts: [imagePart, { text: textPrompt }] }],
+      contents: [{ role: "user", parts: [imagePart, { text: prompt }] }],
       generationConfig,
       safetySettings,
     });
@@ -113,12 +120,18 @@ Analyze the image and provide at least four specific feedback points.`;
     const geminiResponse = JSON.parse(result.response.candidates[0].content.parts[0].text);
 
     for (const feedback of geminiResponse.specificFeedback) {
-      const { x, y, width, height } = feedback.cropCoordinates;
+      const { critique, cropCoordinates, inspirationKeywords } = feedback;
+      // Convert string coordinates to integers
+      const left = parseInt(cropCoordinates.x, 10);
+      const top = parseInt(cropCoordinates.y, 10);
+      const width = parseInt(cropCoordinates.width, 10);
+      const height = parseInt(cropCoordinates.height, 10);
+
       const cropFileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}.png`;
       const cropPath = path.join(__dirname, "public", "crops", cropFileName);
 
       await sharp(imagePath)
-        .extract({ left: x, top: y, width, height })
+        .extract({ left, top, width, height })
         .toFile(cropPath);
       
       feedback.croppedImageUrl = `/crops/${cropFileName}`;

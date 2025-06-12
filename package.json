@@ -6,20 +6,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "start-server": "npx nodemon server.js"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.10",
-    "autoprefixer": "^10.4.19",
-    "axios": "^1.7.2",
-    "next": "14.2.4",
-    "postcss": "^8.4.38",
-    "react": "^18",
-    "react-dom": "^18",
-    "tailwindcss": "^3.4.1"
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "multer": "^2.0.1",
+    "next": "15.3.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sharp": "^0.34.2"
   },
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.3",
+    "tailwindcss": "^4"
   }
 }
