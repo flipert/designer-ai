@@ -1,6 +1,6 @@
 import ImageUploader from "@/components/ImageUploader";
 
-export default function HomePage() {
+export default function Page() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-800 p-8 text-white">
       <div className="w-full max-w-2xl text-center">
@@ -17,3 +17,4 @@ export default function HomePage() {
     </main>
   );
 }
+in vercel my stil
