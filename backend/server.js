@@ -1,4 +1,10 @@
-require('dotenv').config({ path: '../.env' });
+// Optional loading of .env file - will use environment variables directly when deployed
+try {
+  require('dotenv').config({ path: '../.env' });
+} catch (e) {
+  console.log('No .env file found, using environment variables directly');
+}
+
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
