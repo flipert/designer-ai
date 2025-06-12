@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Frontend: All frontend code must be written in React using the Next.js framework.
+
+Styling: All styling must be implemented using Tailwind CSS. Do not write custom CSS files unless absolutely necessary for a specific, unachievable effect with Tailwind.
+
+Backend: The backend server must be built with Node.js and the Express.js framework.
+
+AI Model API: All interactions with the core AI model must use the Google Gemini API, specifically targeting a modern, vision-capable model (e.g., Gemini 2.0 Flash).
+
+Image Processing: All server-side image manipulation (cropping, resizing) must be performed using the Sharp library.
+
+Design Inspiration API: All retrieval of inspirational images must use the official Dribbble API.

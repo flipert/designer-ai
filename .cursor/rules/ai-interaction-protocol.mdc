@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Mandatory JSON Schema: When calling the Google Gemini API, the prompt must instruct the model to return its response in a specific JSON format. The root object must contain two keys: overallFeedback (a string) and specificFeedback (an array of objects).
+
+Specific Feedback Object Structure: Each object within the specificFeedback array must contain exactly three keys:
+
+critique (string): The feedback text.
+
+cropCoordinates (object): An object with x, y, width, and height properties.
+
+dribbbleKeywords (string): Keywords for the Dribbble API search.
+
+Backend Validation: The backend must validate the structure of the JSON response from the AI before processing it or sending it to the client.

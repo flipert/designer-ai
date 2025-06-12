@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Follow the Plan: Adhere to the established 7-step development plan, building components in a logical order (UI Shell > Backend > Integrations > Connection).
+
+Component-Based Design: Create modular and reusable React components for all distinct UI elements (e.g., Uploader, FeedbackCard, DribbbleGallery).
+
+User-Centric States: The frontend must implement clear loading and error states. The user must always know if the application is processing a request or if an error has occurred.
+
+Thorough Commenting: Generate well-commented code, especially for the backend logic involving API orchestration, data transformation, and image processing. Explain the "why" behind the code.

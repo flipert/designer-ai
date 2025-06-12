@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Strict Client-Server Separation: The application must maintain a clear separation between the Next.js frontend and the Node.js/Express backend. The frontend is for UI and user interaction only.
+
+Backend as Orchestrator: The backend is solely responsible for all business logic. This includes:
+
+Receiving uploads from the client.
+
+Communicating with all external APIs (Google Gemini, Dribbble).
+
+Processing images.
+
+Structuring the final data to be sent back to the client.
+
+API Key Security: All API keys (Google Cloud, Dribbble) must be stored securely as environment variables on the backend server. They must never be exposed in the frontend code.
+
+Single Point of Contact: The frontend must only communicate with our own Express backend API. It should never call the Google Gemini or Dribbble APIs directly.
